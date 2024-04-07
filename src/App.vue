@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="flex gap-6">
     <div v-if="!inCall" @click="EnterCall()">
-      <button>Enter Call</button>
+      <button class="bg-black text-white mt-5 ml-5 w-auto p-5 rounded-xl text-2xl">Enter Call</button>
     </div>
 
     <div v-if="inCall">
@@ -9,16 +9,19 @@
       <video ref="RemoteVideo" autoplay></video>
     </div>
 
-    <div v-if="inCall">
-      <div class="">
+    <div v-if="inCall" class="flex flex-col justify-end items-end">
+      <div class="mb-2">
         <ul>
           <li v-for="(message, index) in this.messages" :key="index">
             {{ message.data }}
           </li>
         </ul>
       </div>
-      <input type="text" name="messages" v-model="this.message">
-      <input type="button" value="Enviar" @click="sendMessage()">
+      <div class="">
+        <input type="text" name="messages" v-model="this.message" class="border-black border-2 mr-2 rounded-3xl h-8 text-black">
+        <input type="button" value="Enviar" @click="sendMessage()" class="bg-black w-32 h-8 text-white">
+      </div>
+      
     </div>
     
 
@@ -103,8 +106,7 @@ export default {
     })
 
     this.Socket.on('signal', signal => {
-      this.peer.signal(signal)
-      this.$refs.RemoteVideo.srcObject = signal
+      this.peer.signal(signal)      
     })
 
     this.Socket.on('message', (data) => {
